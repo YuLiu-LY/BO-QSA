@@ -1,4 +1,4 @@
-# BO-QSA
+# Query Slot Attention
 
 This repository is the official implementation of [Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](http://arxiv.org/abs/2210.08990)
 ## Environment Setup
