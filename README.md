@@ -1,5 +1,6 @@
 # BO-QSA
-This repository is the official implementation of [Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention]()
+
+This repository is the official implementation of [Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](http://arxiv.org/abs/2210.08990)
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
 ```bash
@@ -79,6 +80,17 @@ $ cd scripts
 $ cd test
 $ chmod +x trans_dec_birds.sh
 $ ./trans_dec_birds.sh
+```
+
+## Citation
+If you find our paper and/or code helpful, please consider citing:
+```
+@article{jia2022egotaskqa,
+    title = {Unsupervised Object-Centric Learning with Bi-Level Optimized Query Slot Attention},
+    author = {Jia, Baoxiong and Liu, Yu and Huang, Siyuan},
+    journal = {arXiv preprint arXiv:2210.08990},
+    year = {2022}
+}
 ```
 
 ## Acknowledgement
