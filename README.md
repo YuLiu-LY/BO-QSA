@@ -6,7 +6,7 @@ We provide all environment configurations in ``requirements.txt``. To install al
 ```bash
 conda create -n BO-QSA python=3.8
 conda activate BO-QSA
-pip install -r environment.txt
+pip install -r requirements.txt
 conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
 ```
 In our experiments, we used NVIDIA CUDA 11.3 on Ubuntu 20.04. Similar CUDA version should also be acceptable with corresponding version control for ``torch`` and ``torchvision``.
