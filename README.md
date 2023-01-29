@@ -1,45 +1,36 @@
 # Query Slot Attention
 
-This repository is the official implementation of [Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](http://arxiv.org/abs/2210.08990)
+<p align="left">
+    <a href='https://arxiv.org/abs/2210.08990'>
+      <img src='https://img.shields.io/badge/Paper-arXiv-green?style=plastic&logo=arXiv&logoColor=green' alt='Paper arXiv'>
+    </a>
+    <a href='https://arxiv.org/pdf/2210.08990.pdf'>
+      <img src='https://img.shields.io/badge/Paper-PDF-red?style=plastic&logo=adobeacrobatreader&logoColor=red' alt='Paper PDF'>
+    </a>
+    <a href='https://bo-qsa.github.io'>
+      <img src='https://img.shields.io/badge/Project-Page-blue?style=plastic&logo=Google%20chrome&logoColor=blue' alt='Project Page'>
+    </a>
+</p>
+This repository is the official implementation of ICLR 2023 paper:
+
+[Improving Object-centric Learning With Qeury Optimization](http://arxiv.org/abs/2210.08990)
+
+[Baoxiong Jia](https://buzz-beater.github.io/), [YuLiu](https://yuliu-ly.github.io), [Siyuan Huang](https://siyuanhuang.com/)
+
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
 ```bash
 conda create -n BO-QSA python=3.8
 conda activate BO-QSA
-pip install -r requirements.txt
 conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=11.3 -c pytorch -c conda-forge
+pip install -r requirements.txt
 ```
 In our experiments, we used NVIDIA CUDA 11.3 on Ubuntu 20.04. Similar CUDA version should also be acceptable with corresponding version control for ``torch`` and ``torchvision``.
 
 ## Data Download
-### ShapeStacks
-ShapeStacks dataset is avaiable at: https://ogroth.github.io/shapestacks/ 
-```bash
-# Download compressed dataset
-$ cd data/ShapeStacks
-$ wget http://shapestacks-file.robots.ox.ac.uk/static/download/v1/shapestacks-mjcf.tar.gz
-$ wget http://shapestacks-file.robots.ox.ac.uk/static/download/v1/shapestacks-meta.tar.gz
-$ wget http://shapestacks-file.robots.ox.ac.uk/static/download/v1/shapestacks-rgb.tar.gz
-$ wget http://shapestacks-file.robots.ox.ac.uk/static/download/v1/shapestacks-iseg.tar.gz
-# Uncompress files
-$ tar xvzf shapestacks-meta.tar.gz
-$ tar xvzf shapestacks-mjcf.tar.gz
-$ tar xvzf shapestacks-rgb.tar.gz
-$ tar xvzf shapestacks-iseg.tar.gz
-```
-### ObjectsRoom
-ObjectsRoom dataset is avaiable at: https://console.cloud.google.com/storage/browser/multi-object-datasets;tab=objects?prefix=&forceOnObjectsSortingFiltering=false, provided by [Multi-Object Datasets](https://github.com/deepmind/multi_object_datasets)
-```bash
-# Download compressed dataset
-$ cd data/ObjectsRoom
-$ gsutil -m cp -r \
-  "gs://multi-object-datasets/objects_room" \
-  .
-```
-Before you start training, you need to run ``objectsroom_process.py`` to save the tfrecords dataset as a png format
+### ShapeStacks, ObjectsRoom, CLEVRTex, Flowers
+We provide scripts ``scripts/downloads_data.sh`` to download ShapeStacks, ObjectsRoom, CLEVRTex and Flowers datasets.
 
-### CLEVRTex
-ClevrTex dataset is available at: https://www.robots.ox.ac.uk/~vgg/data/clevrtex/
 ### PTR
 PTR dataset is available at: http://ptr.csail.mit.edu
 
@@ -48,10 +39,8 @@ Download the 'Training Images', 'Validation Images', 'Test Images', 'Training An
 Birds, Dogs, Cars datasets are available at: https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk, provided by [DRC](https://github.com/yuPeiyu98/DRC).
 
 Download the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
-### Flowers
-Flowers dataset is available at: https://www.robots.ox.ac.uk/~vgg/data/flowers/102/
-
-Download the 'Dataset images', 'Image segmentations' and 'The data splits' and then uncompress them.
+### YCB, ScanNet, COCO
+YCB, ScanNet and COCO datasets are available at: https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0, provided by [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg)
 
 ## Training
 
@@ -73,7 +62,7 @@ To reload checkpoints and only run inference, we provide the following model fil
  - ``test_mixture_dec.py``: mixture-based model
  - ``test_base_sa.py``: original slot-attention
 
-Similarly, we provide testing scripts under ```scripts/test```. We provide transformer-based model for real-world datasets (Birds, Dogs, Cars, Flowers) 
+Similarly, we provide testing scripts under ```scripts/test```. We provide transformer-based model for real-world datasets (Birds, Dogs, Cars, Flowers, YCB, ScanNet, COCO) 
 and mixture-based model for synthetic datasets(ShapeStacks, ObjectsRoom, ClevrTex, PTR). We provide all checkpoints at this [link](https://drive.google.com/drive/folders/10LmK9JPWsSOcezqd6eLjuzn38VdwkBUf?usp=sharing). Please use the following command and change ``.sh`` file to the model you want to experiment with:
 ```bash
 $ cd scripts
@@ -85,11 +74,11 @@ $ ./trans_dec_birds.sh
 ## Citation
 If you find our paper and/or code helpful, please consider citing:
 ```
-@article{jia2022egotaskqa,
-    title = {Unsupervised Object-Centric Learning with Bi-Level Optimized Query Slot Attention},
-    author = {Jia, Baoxiong and Liu, Yu and Huang, Siyuan},
-    journal = {arXiv preprint arXiv:2210.08990},
-    year = {2022}
+@article{jia2022unsupervised,
+  title={Unsupervised Object-Centric Learning with Bi-Level Optimized Query Slot Attention},
+  author={Jia, Baoxiong and Liu, Yu and Huang, Siyuan},
+  journal={arXiv preprint arXiv:2210.08990},
+  year={2022}
 }
 ```
 
