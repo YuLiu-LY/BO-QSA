@@ -141,7 +141,7 @@ class TransformerDecoderBlock(nn.Module):
         self.self_attn = MultiHeadAttention(d_model, num_heads, dropout, gain)
         
         mask = torch.triu(torch.ones((max_len, max_len), dtype=torch.bool), diagonal=1)
-        self.self_attn_mask = nn.Parameter(mask, requires_grad=False)
+        self.register_buffer('self_attn_mask', mask)
         
         self.encoder_decoder_attn_layer_norm = nn.LayerNorm(d_model)
         self.encoder_decoder_attn = MultiHeadAttention(d_model, num_heads, dropout, gain)

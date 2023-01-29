@@ -1,0 +1,16 @@
+{
+    "data_paths": {
+        "shapestacks": "/scratch/generalvision/ShapeStacks/shapestacks",
+        "birds": "/scratch/generalvision/Birds",
+        "dogs": "/scratch/generalvision/Dogs",
+        "cars": "/scratch/generalvision/Cars",
+        "clevrtex": "/scratch/generalvision/CLEVRTEX",
+        "ptr": "/scratch/generalvision/PTR",
+        "flowers": "/scratch/generalvision/Flowers",
+        "objectsroom": "/scratch/generalvision/ObjectsRoom",
+        "ycb": "/scratch/generalvision/ObjectCentric/YCB",
+        "scannet": "/scratch/generalvision/ObjectCentric/ScanNet",
+        "coco": "/scratch/generalvision/ObjectCentric/COCO"
+    },
+    "log_path": "./results/"
+}

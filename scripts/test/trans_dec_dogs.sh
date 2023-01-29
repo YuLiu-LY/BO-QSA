@@ -1,4 +1,5 @@
-python ../../test/test_trans_dec.py \
+cd ../..
+python ./test/test_trans_dec.py \
 --dataset dogs \
 --evaluate iou \
 --monitor avg_IoU \
@@ -7,5 +8,5 @@ python ../../test/test_trans_dec.py \
 --num_slots 2 \
 --log_name trans_dec \
 --check_val_every_n_epoch 30 \
---is_logger_enabled \
 --seed 42 \
+# --is_logger_enabled \

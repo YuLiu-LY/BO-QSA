@@ -13,7 +13,7 @@ from methods.method_mixture_dec import SlotAttentionMethod
 from methods.utils import ImageLogCallback, set_random_seed
 
 import tensorboard
-
+import json
 import argparse
 
 from data.birds_dataset import BirdsDataModule
@@ -23,18 +23,11 @@ from data.ptr_dataset import PTRDataModule
 from data.clevrtex_dataset import CLEVRTEXDataModule
 from data.dogs_dataset import DogsDataModule
 from data.cars_dataset import CarsDataModule
+from data.ycb_dataset import YCBDataModule
+from data.scannet_dataset import ScanNetDataModule
+from data.coco_dataset import COCODataModule
 from data.objectsroom_dataset import ObjectsRoomDataModule
 
-data_paths = {
-    'shapestacks': '/scratch/generalvision/ShapeStacks/shapestacks',
-    'birds': '/scratch/generalvision/Birds',
-    'dogs': '/scratch/generalvision/Dogs',
-    'cars': '/scratch/generalvision/Cars',
-    'clevrtex': '/scratch/generalvision/CLEVRTEX',
-    'ptr': '/scratch/generalvision/PTR',
-    'flowers': '/scratch/generalvision/Flowers',
-    'objectsroom': '/scratch/generalvision/ObjectsRoom',
-}
 
 datamodules = {
     'shapestacks': ShapeStacksDataModule,
@@ -45,12 +38,22 @@ datamodules = {
     'ptr': PTRDataModule,
     'flowers': FlowersDataModule,
     'objectsroom': ObjectsRoomDataModule,
+    'ycb': YCBDataModule,
+    'scannet': ScanNetDataModule,
+    'coco': COCODataModule,
+}
+
+monitors = {
+    'iou': 'avg_IoU',
+    'ari': 'avg_ARI_FG',
+    'ap': 'avg_AP@05',
 }
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--dataset', default='')
 parser.add_argument('--data_root', default='')
+parser.add_argument('--split_name', type=str, default='image', help='split for YCB, COCO, and ScanNet; for CLEVRTEX is full, outd, and camo')
 parser.add_argument('--log_name', default='test')
 parser.add_argument('--log_path', default='../../results/')
 parser.add_argument('--ckpt_path', default='ckpt.pt.tar')
@@ -65,7 +68,7 @@ parser.add_argument('--max_epochs', type=int, default=100000)
 parser.add_argument('--num_sanity_val_steps', type=int, default=1)
 parser.add_argument('--check_val_every_n_epoch', type=int, default=1)
 parser.add_argument('--n_samples', type=int, default=16)
-parser.add_argument('--batch_size', type=int, default=64)
+parser.add_argument('--batch_size', type=int, default=128, help='batch size per GPU, if use 2 GPUs, change batch size to 64')
 parser.add_argument('--gpus', type=int, default=0)
 
 parser.add_argument('--grad_clip', type=float, default=1.0)
@@ -81,7 +84,7 @@ parser.add_argument('--decoder_kernel_size', type=int, default=5)
 parser.add_argument('--is_logger_enabled', default=False, action='store_true')
 parser.add_argument('--load_from_ckpt', default=False, action='store_true')
 parser.add_argument('--use_rescale', default=False, action='store_true')
-parser.add_argument('--truncate',  type=str, default='bi-level', help='bi-level or fixed-point or w/o')
+parser.add_argument('--truncate',  type=str, default='bi-level', help='bi-level or fixed-point or none')
 
 parser.add_argument('--lr_sa', type=float, default=4e-4)
 parser.add_argument('--warmup_steps', type=int, default=5000)
@@ -92,7 +95,7 @@ parser.add_argument('--num_slots', type=int, default=2)
 parser.add_argument('--init_size', type=int, default=64)
 parser.add_argument('--slot_size', type=int, default=64)
 parser.add_argument('--mlp_size', type=int, default=128)
-parser.add_argument('--init_method', default='embedding', help='init_mlp, embedding, shared_gaussian, independent_gaussian')
+parser.add_argument('--init_method', default='embedding', help='embedding or shared_gaussian')
 
 parser.add_argument('--sigma_steps', type=int, default=30000)
 parser.add_argument('--sigma_final', type=float, default=0)
@@ -102,6 +105,7 @@ parser.add_argument('--sigma_start', type=float, default=1)
 def main(args):
     print(args)
     set_random_seed(args.seed)
+    args.monitor = monitors[args.evaluate]
     datamodule = datamodules[args.dataset](args)
     model = SlotAttentionModel(args)
     method = SlotAttentionMethod(model=model, datamodule=datamodule, args=args)
@@ -140,13 +144,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # args.dataset = 'shapestacks'
     # args.evaluate = 'ari'
-    # args.batch_size = 32 
+    # args.batch_size = 2
     # args.num_slots = 8
+    # args.log_path = '/home/liuyu/rebuttal/results'
+    # args.gpus = 1
     # args.resolution = [128, 128]
     # args.init_resolution = [8, 8]
+    paths = json.load(open('./path.json', 'r'))
+    data_paths = paths['data_paths']
+    args.log_path = paths['log_path']
     args.data_root = data_paths[args.dataset]
     args.log_path += args.dataset
     main(args)
-
-    
-

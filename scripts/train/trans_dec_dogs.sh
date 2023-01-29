@@ -1,7 +1,7 @@
-python ../../train/train_trans_dec.py \
+cd ../..
+python ./train/train_trans_dec.py \
 --dataset dogs \
 --evaluate iou \
---monitor avg_IoU \
 --gpus 1 \
 --batch_size 128 \
 --num_slots 2 \

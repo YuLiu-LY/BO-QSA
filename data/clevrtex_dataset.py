@@ -123,6 +123,7 @@ class CLEVRTEX(Dataset):
         self.split = split
 
         self.basepath = Path(path)
+        print(self.basepath)
         if not self.basepath.exists():
             raise DatasetReadError()
         sub_fold = self._variant_subfolder()
@@ -214,7 +215,6 @@ class CLEVRTEXDataModule(pl.LightningDataModule):
         self.data_root = args.data_root
         self.batch_size = args.batch_size
         self.num_workers = args.num_workers
-        args.split_name = "full"
         args.use_crop = False
 
         self.train_dataset = CLEVRTEX(self.data_root, args.split_name, "train", args.use_rescale, 

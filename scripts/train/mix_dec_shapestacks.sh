@@ -1,7 +1,7 @@
-python ../../train/train_mixture_dec.py \
+cd ../..
+python ./train/train_mixture_dec.py \
 --dataset shapestacks \
 --evaluate ari \
---monitor avg_ARI_FG \
 --gpus 1 \
 --batch_size 128 \
 --num_slots 8 \

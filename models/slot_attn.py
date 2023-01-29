@@ -104,21 +104,10 @@ class SlotAttentionEncoder(nn.Module):
 
         self.slot_attention = SlotAttention(slot_size, mlp_size, truncate, drop_path=drop_path)
 
-        assert init_method in ['init_mlp', 'shared_gaussian', 'independent_gaussian', 'embedding']
-        if init_method == 'init_mlp':
-            self.initializer = Initializer(
-                slot_size=slot_size, 
-                mlp_size=mlp_size,
-            )
-            self.onehot_vector = torch.eye(slot_size)[:self.num_slots]
-        elif init_method == 'shared_gaussian':
+        assert init_method in ['shared_gaussian', 'embedding']
+        if init_method == 'shared_gaussian':
             self.slot_mu = nn.Parameter(torch.zeros(1, 1, slot_size))
             self.slot_log_sigma = nn.Parameter(torch.zeros(1, 1, slot_size))
-            nn.init.xavier_uniform_(self.slot_mu)
-            nn.init.xavier_uniform_(self.slot_log_sigma)
-        elif init_method == 'independent_gaussian':
-            self.slot_mu = nn.Parameter(torch.zeros(1, num_slots, slot_size))
-            self.slot_log_sigma = nn.Parameter(torch.zeros(1, num_slots, slot_size))
             nn.init.xavier_uniform_(self.slot_mu)
             nn.init.xavier_uniform_(self.slot_log_sigma)
         elif init_method == 'embedding':
@@ -127,25 +116,20 @@ class SlotAttentionEncoder(nn.Module):
         else:
             raise NotImplementedError
     
-    def forward(self, f, sigma=0):
+    def forward(self, f, sigma, slots_init=None):
         B = f.shape[0]
         f = self.pos_emb(f)
         f = torch.flatten(f, start_dim=2, end_dim=3).permute(0, 2, 1)
         f = self.mlp(f)
 
-        if self.init_method == 'init_mlp':
-            mu = self.initializer(self.onehot_vector.type_as(f))
-            mu = mu.unsqueeze(0).expand(B, -1, -1)
-            z = torch.randn_like(mu).type_as(f)
-            slots_init = mu + z * sigma * mu.detach()
-        elif self.init_method == 'shared_gaussian':
-            slots_init = torch.randn(B, self.num_slots, self.slot_size).type_as(f) * torch.exp(self.slot_log_sigma) + self.slot_mu
-        elif self.init_method == 'independent_gaussian':
-            slots_init = torch.randn(B, self.num_slots, self.slot_size).type_as(f) * torch.exp(self.slot_log_sigma) + self.slot_mu
-        elif self.init_method == 'embedding':
-            mu = self.slots_init.weight.expand(B, -1, -1)
-            z = torch.randn_like(mu).type_as(f)
-            slots_init = mu + z * sigma * mu.detach()      
+        if slots_init == None:
+            # The first frame, initialize slots.
+            if self.init_method == 'shared_gaussian':
+                slots_init = torch.randn(B, self.num_slots, self.slot_size).type_as(f) * torch.exp(self.slot_log_sigma) + self.slot_mu
+            elif self.init_method == 'embedding':
+                mu = self.slots_init.weight.expand(B, -1, -1)
+                z = torch.randn_like(mu).type_as(f)
+                slots_init = mu + z * sigma * mu.detach()
 
         slots, attn  = self.slot_attention(f, slots_init, self.num_iter)
         
@@ -156,20 +140,5 @@ class SlotAttentionEncoder(nn.Module):
         }
 
 
-class Initializer(nn.Module):
-    def __init__(
-        self, 
-        slot_size,
-        mlp_size,
-    ):
-        super().__init__()
-        self.init_mlp = nn.Sequential(
-            nn.Linear(slot_size, mlp_size), 
-            nn.LeakyReLU(0.2),
-            nn.Linear(mlp_size, slot_size),
-        )
-
-    def forward(self, x):
-        return self.init_mlp(x)
 
 

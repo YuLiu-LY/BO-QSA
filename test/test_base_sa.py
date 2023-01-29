@@ -1,6 +1,6 @@
 import pytorch_lightning.loggers as pl_loggers
 from pytorch_lightning import Trainer
-from pytorch_lightning.callbacks import LearningRateMonitor
+from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 
 import os
 import sys
@@ -13,7 +13,7 @@ from methods.method_mixture_dec import SlotAttentionMethod
 from methods.utils import ImageLogCallback, set_random_seed, state_dict_ckpt
 
 import tensorboard
-
+import json
 import argparse
 
 from data.birds_dataset import BirdsDataModule
@@ -23,18 +23,11 @@ from data.ptr_dataset import PTRDataModule
 from data.clevrtex_dataset import CLEVRTEXDataModule
 from data.dogs_dataset import DogsDataModule
 from data.cars_dataset import CarsDataModule
+from data.ycb_dataset import YCBDataModule
+from data.scannet_dataset import ScanNetDataModule
+from data.coco_dataset import COCODataModule
 from data.objectsroom_dataset import ObjectsRoomDataModule
 
-data_paths = {
-    'shapestacks': '/scratch/generalvision/ShapeStacks/shapestacks',
-    'birds': '/scratch/generalvision/Birds',
-    'dogs': '/scratch/generalvision/Dogs',
-    'cars': '/scratch/generalvision/Cars',
-    'clevrtex': '/scratch/generalvision/CLEVRTEX',
-    'ptr': '/scratch/generalvision/PTR',
-    'flowers': '/scratch/generalvision/Flowers',
-    'objectsroom': '/scratch/generalvision/ObjectsRoom',
-}
 
 datamodules = {
     'shapestacks': ShapeStacksDataModule,
@@ -45,12 +38,22 @@ datamodules = {
     'ptr': PTRDataModule,
     'flowers': FlowersDataModule,
     'objectsroom': ObjectsRoomDataModule,
+    'ycb': YCBDataModule,
+    'scannet': ScanNetDataModule,
+    'coco': COCODataModule,
+}
+
+monitors = {
+    'iou': 'avg_IoU',
+    'ari': 'avg_ARI_FG',
+    'ap': 'avg_AP@05',
 }
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--dataset', default='')
 parser.add_argument('--data_root', default='')
+parser.add_argument('--split_name', type=str, default='image', help='split for YCB, COCO, and ScanNet; for CLEVRTEX is full, outd, and camo')
 parser.add_argument('--log_name', default='test')
 parser.add_argument('--log_path', default='../../results/')
 parser.add_argument('--ckpt_path', default='ckpt.pt.tar')
@@ -92,7 +95,7 @@ parser.add_argument('--num_slots', type=int, default=2)
 parser.add_argument('--init_size', type=int, default=64)
 parser.add_argument('--slot_size', type=int, default=64)
 parser.add_argument('--mlp_size', type=int, default=128)
-parser.add_argument('--init_method', default='embedding', help='init_mlp, embedding, shared_gaussian, independent_gaussian')
+parser.add_argument('--init_method', default='embedding', help='shared_gaussian, embedding')
 
 parser.add_argument('--sigma_steps', type=int, default=30000)
 parser.add_argument('--sigma_final', type=float, default=0)
@@ -101,6 +104,7 @@ parser.add_argument('--sigma_start', type=float, default=1)
 
 def main(args):
     set_random_seed(args.seed)
+    args.monitor = monitors[args.evaluate]
     datamodule = datamodules[args.dataset](args)
     args.test_num_slots = args.num_slots
     model = SlotAttentionModel(args)
@@ -141,9 +145,11 @@ if __name__ == "__main__":
     # args.encoder_strides = [2, 1, 1, 1]
     # args.decoder_strides = [2, 2, 2, 2]
     # args.num_slots = 8
-
+    paths = json.load(open('./path.json', 'r'))
+    data_paths = paths['data_paths']
+    args.log_path = paths['log_path']
     args.data_root = data_paths[args.dataset]
     args.log_path += args.dataset
-    # args.test_ckpt_path = f'../../checkpoints/{args.dataset}/{args.dataset}_base_sa.ckpt'
+    args.test_ckpt_path = f'./checkpoints/{args.dataset}/{args.dataset}_base_sa.ckpt'
     main(args)
 

@@ -1,13 +1,10 @@
 cd ../..
 python ./test/test_trans_dec.py \
---dataset flowers \
---evaluate iou \
---monitor avg_IoU \
+--dataset ycb \
+--evaluate ap \
 --gpus 1 \
 --batch_size 128 \
---num_slots 2 \
+--num_slots 6 \
 --log_name trans_dec \
---check_val_every_n_epoch 30 \
 --seed 42 \
---sigma_steps 0 \
 # --is_logger_enabled \

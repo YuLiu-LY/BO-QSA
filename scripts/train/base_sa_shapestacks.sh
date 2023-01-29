@@ -1,4 +1,5 @@
-python ../../train/train_base_sa.py \
+cd ../..
+python ./train/train_base_sa.py \
 --dataset shapestacks \
 --evaluate ari \
 --monitor avg_ARI_FG \

@@ -13,28 +13,21 @@ from methods.method_mixture_dec import SlotAttentionMethod
 from methods.utils import ImageLogCallback, set_random_seed
 
 import tensorboard
-
+import json
 import argparse
 
 from data.birds_dataset import BirdsDataModule
 from data.shapestacks_dataset import ShapeStacksDataModule
+from data.flowers_dataset import FlowersDataModule
 from data.ptr_dataset import PTRDataModule
 from data.clevrtex_dataset import CLEVRTEXDataModule
 from data.dogs_dataset import DogsDataModule
 from data.cars_dataset import CarsDataModule
+from data.ycb_dataset import YCBDataModule
+from data.scannet_dataset import ScanNetDataModule
+from data.coco_dataset import COCODataModule
 from data.objectsroom_dataset import ObjectsRoomDataModule
-from data.flowers_dataset import FlowersDataModule
 
-data_paths = {
-    'shapestacks': '/scratch/generalvision/ShapeStacks/shapestacks',
-    'birds': '/scratch/generalvision/Birds',
-    'dogs': '/scratch/generalvision/Dogs',
-    'cars': '/scratch/generalvision/Cars',
-    'clevrtex': '/scratch/generalvision/CLEVRTEX',
-    'ptr': '/scratch/generalvision/PTR',
-    'objectsroom': '/scratch/generalvision/ObjectsRoom',
-    'flowers': '/scratch/generalvision/Flowers',
-}
 
 datamodules = {
     'shapestacks': ShapeStacksDataModule,
@@ -43,8 +36,17 @@ datamodules = {
     'cars': CarsDataModule,
     'clevrtex': CLEVRTEXDataModule,
     'ptr': PTRDataModule,
-    'objectsroom': ObjectsRoomDataModule,
     'flowers': FlowersDataModule,
+    'objectsroom': ObjectsRoomDataModule,
+    'ycb': YCBDataModule,
+    'scannet': ScanNetDataModule,
+    'coco': COCODataModule,
+}
+
+monitors = {
+    'iou': 'avg_IoU',
+    'ari': 'avg_ARI_FG',
+    'ap': 'avg_AP@05',
 }
 
 parser = argparse.ArgumentParser()
@@ -65,7 +67,7 @@ parser.add_argument('--max_epochs', type=int, default=100000)
 parser.add_argument('--num_sanity_val_steps', type=int, default=1)
 parser.add_argument('--check_val_every_n_epoch', type=int, default=1)
 parser.add_argument('--n_samples', type=int, default=16)
-parser.add_argument('--batch_size', type=int, default=64)
+parser.add_argument('--batch_size', type=int, default=128, help='batch size per GPU, if use 2 GPUs, change batch size to 64')
 parser.add_argument('--gpus', type=int, default=0)
 
 parser.add_argument('--grad_clip', type=float, default=1.0)
@@ -102,6 +104,7 @@ parser.add_argument('--sigma_start', type=float, default=1)
 def main(args):
     print(args)
     set_random_seed(args.seed)
+    args.monitor = monitors[args.evaluate]
     datamodule = datamodules[args.dataset](args)
     model = SlotAttentionModel(args)
     method = SlotAttentionMethod(model=model, datamodule=datamodule, args=args)
@@ -144,6 +147,9 @@ if __name__ == "__main__":
     # args.num_slots = 2
     # args.resolution = [128, 128]
     # args.init_resolution = [8, 8]
+    paths = json.load(open('./path.json', 'r'))
+    data_paths = paths['data_paths']
+    args.log_path = paths['log_path']
     args.data_root = data_paths[args.dataset]
     args.log_path += args.dataset
     main(args)

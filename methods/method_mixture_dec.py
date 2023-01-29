@@ -13,6 +13,7 @@ sys.path.append(root_path)
 
 from models.model_mixture_dec import SlotAttentionModel
 from methods.utils import to_rgb_from_tensor, average_ari, iou_and_dice, average_segcover
+from methods.seg_metrics import Segmentation_Metrics_Calculator
 
 
 class SlotAttentionMethod(pl.LightningModule):
@@ -26,6 +27,8 @@ class SlotAttentionMethod(pl.LightningModule):
         self.evaluate = args.evaluate
         self.sigma = 0
         self.sample_num = 0
+        if self.evaluate == "ap":
+            self.seg_metric_logger = Segmentation_Metrics_Calculator(max_ins_num=self.args.num_slots)
 
     def forward(self, input, **kwargs):
         return self.model(input, **kwargs)
@@ -120,17 +123,44 @@ class SlotAttentionMethod(pl.LightningModule):
                 dice = torch.max(dice, dice1)
             output['IoU'] = iou.mean()
             output['Dice'] = dice.mean()
+        elif self.evaluate == "ap":
+            masks = masks.detach().cpu()[:, :, 0, :, :]           # (B, K, 1, H, W) -> (B, K, H, W)
+            pred_mask_conf, _ = masks.max(dim=1)
+            confidence_mask = (pred_mask_conf > 0.5)
+            pred_mask_oh = masks.argmax(dim=1)                    # (B, K, H, W) -> (B, H, W)
+            gt_mask_oh = masks_gt[:, 0, :, :].cpu()               # (B, 1, H, W) -> (B, H, W)                   
+            gt_fg_batch = (gt_mask_oh != 0)
+            self.seg_metric_logger.update_new_batch(
+                pred_mask_batch=pred_mask_oh,
+                gt_mask_batch=gt_mask_oh,
+                valid_pred_batch=confidence_mask,
+                gt_fg_batch=gt_fg_batch,
+                pred_conf_mask_batch=pred_mask_conf
+            )
         return output
 
     def validation_epoch_end(self, outputs):
         self.empty_cache = True
-        keys = outputs[0].keys()
-        logs = {}
-        for k in keys:
-            v = torch.stack([x[k] for x in outputs]).mean()
-            logs['avg_' + k] = v
-        self.log_dict(logs, sync_dist=True)
-        print("; ".join([f"{k}: {v.item():.6f}" for k, v in logs.items()]))
+        if self.evaluate != "ap":
+            keys = outputs[0].keys()
+            logs = {}
+            for k in keys:
+                v = torch.stack([x[k] for x in outputs]).mean()
+                logs['avg_' + k] = v
+            self.log_dict(logs, sync_dist=True)
+            print("; ".join([f"{k}: {v.item():.6f}" for k, v in logs.items()]))
+        else:
+            outputs = self.seg_metric_logger.calculate_score_summary()
+            keys = outputs.keys()
+            logs = {}
+            for k in keys:
+                if k not in ['AP@05','PQ','F1','precision','recall']:
+                    continue
+                v = outputs[k]
+                logs['avg_' + k] = v
+            self.log_dict(logs, sync_dist=True)
+            print("; ".join([f"{k}: {v:.6f}" for k, v in logs.items()]))
+            self.seg_metric_logger.reset()
     
     def test_step(self, batch, batch_idx):
         if self.empty_cache:
@@ -163,21 +193,45 @@ class SlotAttentionMethod(pl.LightningModule):
                 dice = torch.max(dice, dice1)
             output['IoU'] = iou.mean()
             output['Dice'] = dice.mean()
-    
+        elif self.evaluate == "ap":
+            masks = masks.detach().cpu()[:, :, 0, :, :]           # (B, K, 1, H, W) -> (B, K, H, W)
+            pred_mask_conf, _ = masks.max(dim=1)
+            confidence_mask = (pred_mask_conf > 0.5)
+            pred_mask_oh = masks.argmax(dim=1)                    # (B, K, H, W) -> (B, H, W)
+            gt_mask_oh = masks_gt[:, 0, :, :].cpu()               # (B, 1, H, W) -> (B, H, W)                   
+            gt_fg_batch = (gt_mask_oh != 0)
+            self.seg_metric_logger.update_new_batch(
+                pred_mask_batch=pred_mask_oh,
+                gt_mask_batch=gt_mask_oh,
+                valid_pred_batch=confidence_mask,
+                gt_fg_batch=gt_fg_batch,
+                pred_conf_mask_batch=pred_mask_conf
+            )
         return output
         
 
     def test_epoch_end(self, outputs):
         self.empty_cache = True
-        keys = outputs[0].keys()
-        logs = {}
-        for k in keys:
-            v = torch.stack([x[k] for x in outputs]).mean()
-            logs['avg_' + k] = v
-        self.log_dict(logs)
-        print("; ".join([f"{k}: {v.item():.6f}" for k, v in logs.items()]))
-        return logs
-
+        if self.evaluate != "ap":
+            keys = outputs[0].keys()
+            logs = {}
+            for k in keys:
+                v = torch.stack([x[k] for x in outputs]).mean()
+                logs['avg_' + k] = v
+            self.log_dict(logs, sync_dist=True)
+            print("; ".join([f"{k}: {v.item():.6f}" for k, v in logs.items()]))
+        else:
+            outputs = self.seg_metric_logger.calculate_score_summary()
+            keys = outputs.keys()
+            logs = {}
+            for k in keys:
+                if k not in ['AP@05','PQ','F1','precision','recall']:
+                    continue
+                v = outputs[k]
+                logs['avg_' + k] = v
+            self.log_dict(logs, sync_dist=True)
+            print("; ".join([f"{k}: {v:.6f}" for k, v in logs.items()]))
+            self.seg_metric_logger.reset()
     def configure_optimizers(self):
 
         warmup_steps = self.args.warmup_steps

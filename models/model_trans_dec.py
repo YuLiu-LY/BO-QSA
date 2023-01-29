@@ -44,7 +44,7 @@ class SLATE(nn.Module):
 
 
 
-    def forward(self, image, test=False, tau=0.1, sigma=0):
+    def forward(self, image, visualize=False, tau=0.1, sigma=0):
         """
         image: batch_size x img_channels x H x W
         """
@@ -85,7 +85,7 @@ class SLATE(nn.Module):
 
         loss["cross_entropy"] = cross_entropy
 
-        if test:
+        if visualize:
             with torch.no_grad():
                 out['recon'] = recon
                 pred_z = F.one_hot(pred.argmax(dim=-1), self.vocab_size).float().transpose(1, 2).reshape(B, self.vocab_size, H // 4, W // 4)
