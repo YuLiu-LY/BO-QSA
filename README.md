@@ -45,10 +45,10 @@ chmod +x scripts/downloads_data.sh
 Download PTR dataset following instructions from http://ptr.csail.mit.edu.
 
 ### Birds, Dogs, Cars
-Download CUB-Birds, Stanford Dogs, and Cars datasets at: https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk, provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
+Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
 
 ### YCB, ScanNet, COCO
-YCB, ScanNet and COCO datasets are available at: https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0, provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
+YCB, ScanNet and COCO datasets are available from [here](https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0), provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
 
 
 ## Training
