@@ -19,9 +19,9 @@ This repository contains the official implementation of the ICLR 2023 paper:
 [Baoxiong Jia](https://buzz-beater.github.io/), [YuLiu](https://yuliu-ly.github.io), [Siyuan Huang](https://siyuanhuang.com/)
 
 ## TODO:
-- [] Overview animation illustration
-- [] ClevrTex set-up instruction
-- [] Data organization instruction (e.g. file path changes in scripts)
+- [ ] Overview animation illustration
+- [ ] ClevrTex set-up instruction
+- [ ] Data organization instruction (e.g. file path changes in scripts)
 
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
