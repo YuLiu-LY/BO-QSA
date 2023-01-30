@@ -2,6 +2,7 @@ cd ../..
 python ./test/test_mixture_dec.py \
 --dataset clevrtex \
 --evaluate ari \
+--split_name 'full' \
 --monitor avg_ARI_FG \
 --gpus 1 \
 --batch_size 128 \
