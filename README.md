@@ -1,4 +1,4 @@
-# Query Slot Attention
+# BO-QSA
 
 <p align="left">
     <a href='https://arxiv.org/abs/2210.08990'>
@@ -11,11 +11,17 @@
       <img src='https://img.shields.io/badge/Project-Page-blue?style=plastic&logo=Google%20chrome&logoColor=blue' alt='Project Page'>
     </a>
 </p>
-This repository is the official implementation of ICLR 2023 paper:
+
+This repository contains the official implementation of the ICLR 2023 paper:
 
 [Improving Object-centric Learning With Qeury Optimization](http://arxiv.org/abs/2210.08990)
 
 [Baoxiong Jia](https://buzz-beater.github.io/), [YuLiu](https://yuliu-ly.github.io), [Siyuan Huang](https://siyuanhuang.com/)
+
+## TODO:
+- [] Overview animation illustration
+- [] ClevrTex set-up instruction
+- [] Data organization instruction (e.g. file path changes in scripts)
 
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
@@ -29,18 +35,21 @@ In our experiments, we used NVIDIA CUDA 11.3 on Ubuntu 20.04. Similar CUDA versi
 
 ## Data Download
 ### ShapeStacks, ObjectsRoom, CLEVRTex, Flowers
-We provide scripts ``scripts/downloads_data.sh`` to download ShapeStacks, ObjectsRoom, CLEVRTex and Flowers datasets.
+Download ShapeStacks, ObjectsRoom, CLEVRTex and Flowers datasets with
+```bash
+chmod +x scripts/downloads_data.sh
+./downloads_data.sh
+```
 
 ### PTR
-PTR dataset is available at: http://ptr.csail.mit.edu
+Download PTR dataset following instructions from http://ptr.csail.mit.edu.
 
-Download the 'Training Images', 'Validation Images', 'Test Images', 'Training Annotations', 'Validation Annotations' and then uncompress them.
 ### Birds, Dogs, Cars
-Birds, Dogs, Cars datasets are available at: https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk, provided by [DRC](https://github.com/yuPeiyu98/DRC).
+Download CUB-Birds, Stanford Dogs, and Cars datasets at: https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk, provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
 
-Download the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
 ### YCB, ScanNet, COCO
-YCB, ScanNet and COCO datasets are available at: https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0, provided by [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg)
+YCB, ScanNet and COCO datasets are available at: https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0, provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
+
 
 ## Training
 
@@ -55,7 +64,7 @@ $ cd train
 $ chmod +x trans_dec_birds.sh
 $ ./trans_dec_birds.sh
 ```
-## Reload ckpts & test_only
+## Reloading checkpoints & Evaluation
 
 To reload checkpoints and only run inference, we provide the following model files:
  - ``test_trans_dec.py``: transformer-based model
@@ -63,7 +72,7 @@ To reload checkpoints and only run inference, we provide the following model fil
  - ``test_base_sa.py``: original slot-attention
 
 Similarly, we provide testing scripts under ```scripts/test```. We provide transformer-based model for real-world datasets (Birds, Dogs, Cars, Flowers, YCB, ScanNet, COCO) 
-and mixture-based model for synthetic datasets(ShapeStacks, ObjectsRoom, ClevrTex, PTR). We provide all checkpoints at this [link](https://drive.google.com/drive/folders/10LmK9JPWsSOcezqd6eLjuzn38VdwkBUf?usp=sharing). Please use the following command and change ``.sh`` file to the model you want to experiment with:
+and mixture-based model for synthetic datasets(ShapeStacks, ObjectsRoom, ClevrTex, PTR). We provide all checkpoints [here](https://drive.google.com/drive/folders/10LmK9JPWsSOcezqd6eLjuzn38VdwkBUf?usp=sharing). Please use the following command and change ``.sh`` file to the model you want to experiment with:
 ```bash
 $ cd scripts
 $ cd test
