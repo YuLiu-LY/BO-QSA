@@ -104,23 +104,24 @@ class COCODataModule(pl.LightningDataModule):
 
 
 '''test'''
-# if __name__ == '__main__':
-    # import argparse
-    # parser = argparse.ArgumentParser()
-    # args = parser.parse_args()
-    # args.data_root = '/scratch/generalvision/ObjectsRoom'
-    # args.use_rescale = False
-    # args.batch_size = 20
-    # args.num_workers = 4
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()
+    args.data_root = '/scratch/generalvision/ObjectCentric/COCO'
+    args.use_rescale = False
+    args.batch_size = 20
+    args.num_workers = 0
+    args.split_name = 'image'
 
-    # datamodule = ObjectsRoomDataModule(args)
-    # dl = datamodule.val_dataloader()
-    # it = iter(dl)
-    # batch = next(it)
-    # batch_img, batch_masks = batch['image'], batch['mask']
-    # print(batch_img.shape, batch_masks.shape)
-    # for mask in batch_masks:
-    #     print(mask.unique())
-    # print(batch_masks[0, 0, 16:48, 16:32])
+    datamodule = COCODataModule(args)
+    dl = datamodule.val_dataloader()
+    it = iter(dl)
+    batch = next(it)
+    batch_img, batch_masks = batch['image'], batch['mask']
+    print(batch_img.shape, batch_masks.shape)
+    for mask in batch_masks:
+        print(mask.unique())
+    print(batch_masks[0, 0, 16:48, 16:32])
 
     

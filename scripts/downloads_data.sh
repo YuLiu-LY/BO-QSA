@@ -14,7 +14,7 @@ gsutil -m cp -r \
   "gs://multi-object-datasets/objects_room" \
   .
 # Download CLEVR-Tex dataset
-cd data/CLEVR-Tex
+cd data/CLEVRTEX
 wget https://thor.robots.ox.ac.uk/~vgg/data/clevrtex/clevrtex_packaged/clevrtex_full_part1.tar.gz
 wget https://thor.robots.ox.ac.uk/~vgg/data/clevrtex/clevrtex_packaged/clevrtex_full_part2.tar.gz
 wget https://thor.robots.ox.ac.uk/~vgg/data/clevrtex/clevrtex_packaged/clevrtex_full_part3.tar.gz

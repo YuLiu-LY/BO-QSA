@@ -155,20 +155,20 @@ def np_img_centre_crop(np_img, crop_dim, batch=False):
         return np_img[:, s1:s1+crop_dim, s2:s2+crop_dim]
 
 '''test'''
-# if __name__ == '__main__':
-#     import argparse
-#     import torch
-#     parser = argparse.ArgumentParser()
-#     args = parser.parse_args()
-#     args.data_root = '/scratch/generalvision/ShapeStacks/shapestacks'
-#     args.use_rescale = False
-#     args.batch_size = 128
-#     args.num_workers = 4
-#     args.resolution = 128, 128
+if __name__ == '__main__':
+    import argparse
+    import torch
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()
+    args.data_root = '/scratch/generalvision/ShapeStacks'
+    args.use_rescale = False
+    args.batch_size = 128
+    args.num_workers = 4
+    args.resolution = 128, 128
 
-#     datamodule = ShapeStacksDataModule(args)
-#     dl = datamodule.val_dataloader()
-#     batch = next(iter(dl))
-#     batch_img, batch_masks = batch['image'], batch['mask']
-#     batch_path = batch['mask_path']
-#     print(batch_img.shape, batch_masks.shape)
+    datamodule = ShapeStacksDataModule(args)
+    dl = datamodule.val_dataloader()
+    batch = next(iter(dl))
+    batch_img, batch_masks = batch['image'], batch['mask']
+    batch_path = batch['mask_path']
+    print(batch_img.shape, batch_masks.shape)

@@ -1,6 +1,6 @@
 {
     "data_paths": {
-        "shapestacks": "/scratch/generalvision/ShapeStacks/shapestacks",
+        "shapestacks": "/scratch/generalvision/ShapeStacks",
         "birds": "/scratch/generalvision/Birds",
         "dogs": "/scratch/generalvision/Dogs",
         "cars": "/scratch/generalvision/Cars",

@@ -20,8 +20,7 @@ This repository contains the official implementation of the ICLR 2023 paper:
 
 ## TODO:
 - [ ] Overview animation illustration
-- [ ] ClevrTex set-up instruction
-- [ ] Data organization instruction (e.g. file path changes in scripts)
+
 
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
@@ -50,6 +49,8 @@ Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.g
 ### YCB, ScanNet, COCO
 YCB, ScanNet and COCO datasets are available from [here](https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0), provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
 
+## Data organization instruction
+We organize the data as [follows](./data/README.md).
 
 ## Training
 

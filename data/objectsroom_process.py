@@ -13,7 +13,7 @@ import tensorflow as tf
 import third_party.multi_object_datasets.objects_room as objects_room
 
 
-data_root = '/scratch/generalvision/ObjectsRoom/'
+DATA_ROOT = '/scratch/generalvision/ObjectsRoom/'
 OBJECTS_ROOM = 'objects_room_train.tfrecords'
 SEED = 0
 num_workers = 4
@@ -26,10 +26,10 @@ batch_size = 2000
 
 # save img and mask as png
 def save_img_and_mask(dataset, batch_size, num_img, background_entities, num_entities, split):
-    if not os.path.exists(f'{data_root}/{split}/images'):
-        os.makedirs(f'{data_root}/{split}/images')
-    if not os.path.exists(f'{data_root}/{split}/masks'):
-        os.makedirs(f'{data_root}/{split}/masks')
+    if not os.path.exists(f'{DATA_ROOT}/{split}/images'):
+        os.makedirs(f'{DATA_ROOT}/{split}/images')
+    if not os.path.exists(f'{DATA_ROOT}/{split}/masks'):
+        os.makedirs(f'{DATA_ROOT}/{split}/masks')
     batched_dataset = dataset.batch(batch_size)  # optional batching
     iterator = batched_dataset.make_one_shot_iterator()
     data = iterator.get_next()
@@ -53,7 +53,7 @@ def save_img_and_mask(dataset, batch_size, num_img, background_entities, num_ent
                 # save image
                 img = image_batch[i]
                 img = Image.fromarray(img, 'RGB')
-                image_path = f'{data_root}/{split}/images/img_{str(num).zfill(6)}.png'
+                image_path = f'{DATA_ROOT}/{split}/images/img_{str(num).zfill(6)}.png'
                 img.save(image_path)
                 # save mask
                 mask = masks[i].reshape(H, W) # (64, 64, 1)
@@ -61,7 +61,7 @@ def save_img_and_mask(dataset, batch_size, num_img, background_entities, num_ent
                 mask = Image.fromarray(mask.astype(np.uint8), 'P')
                 palette = [random.randint(0, 255) for x in range(256 * 3)]
                 mask.putpalette(palette)
-                mask_path = f'{data_root}/{split}/masks/mask_{str(num).zfill(6)}.png'
+                mask_path = f'{DATA_ROOT}/{split}/masks/mask_{str(num).zfill(6)}.png'
                 mask.save(mask_path)
                 num += 1
             if B < batch_size:
@@ -76,7 +76,7 @@ def process_data():
     tf.random.set_seed(SEED)
     tf.compat.v1.disable_eager_execution()
 
-    data_path = data_root + OBJECTS_ROOM
+    data_path = DATA_ROOT + OBJECTS_ROOM
     raw_dataset = objects_room.dataset(
         data_path,
         'train',
