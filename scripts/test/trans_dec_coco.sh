@@ -1,6 +1,6 @@
 cd ../..
 python ./test/test_trans_dec.py \
---dataset ycb \
+--dataset coco \
 --evaluate ap \
 --gpus 1 \
 --batch_size 128 \

@@ -40,7 +40,7 @@ chmod +x scripts/downloads_data.sh
 ./downloads_data.sh
 ```
 For ObjectsRoom dataset, you need to run ``objectsroom_process.py`` to save the tfrecords dataset as a png format.
-
+Remember to change the ``DATA_ROOT`` in ``downloads_data.sh`` and ``objectsroom_process.py`` to your own paths.
 ### PTR
 Download PTR dataset following instructions from http://ptr.csail.mit.edu.
 

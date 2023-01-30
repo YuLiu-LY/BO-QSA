@@ -7,3 +7,4 @@ events.*
 *.png
 **/.DS_Store
 *.yaml
+*.ckpt

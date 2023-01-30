@@ -1,16 +1,16 @@
 {
     "data_paths": {
-        "shapestacks": "/home/yuliu/Dataset/ShapeStacks",
-        "birds": "/home/yuliu/Dataset/Birds",
-        "dogs": "/home/yuliu/Dataset/Dogs",
-        "cars": "/home/yuliu/Dataset/Cars",
-        "clevrtex": "/home/yuliu/Dataset/CLEVRTEX",
-        "ptr": "/home/yuliu/Dataset/PTR",
-        "flowers": "/home/yuliu/Dataset/Flowers",
-        "objectsroom": "/home/yuliu/Dataset/ObjectsRoom",
-        "ycb": "/home/yuliu/Dataset/ObjectCentric/YCB",
-        "scannet": "/home/yuliu/Dataset/ObjectCentric/ScanNet",
-        "coco": "/home/yuliu/Dataset/ObjectCentric/COCO"
+        "shapestacks": "/scratch/generalvision/ShapeStacks",
+        "birds": "/scratch/generalvision/Birds",
+        "dogs": "/scratch/generalvision/Dogs",
+        "cars": "/scratch/generalvision/Cars",
+        "clevrtex": "/scratch/generalvision/CLEVRTEX",
+        "ptr": "/scratch/generalvision/PTR",
+        "flowers": "/scratch/generalvision/Flowers",
+        "objectsroom": "/scratch/generalvision/ObjectsRoom",
+        "ycb": "/scratch/generalvision/ObjectCentric/YCB",
+        "scannet": "/scratch/generalvision/ObjectCentric/ScanNet",
+        "coco": "/scratch/generalvision/ObjectCentric/COCO"
     },
     "log_path": "./results/"
 }

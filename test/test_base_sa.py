@@ -126,13 +126,12 @@ def main(args):
     trainer.test(method)
     
     # visualize
-    from torchvision import transforms
-    for i in range(2):
-        method.eval()
-        images = method.sample_images()
-        images = transforms.ToPILImage()(images)
-        images.save(f'./{i}.png')
-        # trainer.logger.experiment.add_image('images', images, i)
+    # from torchvision import transforms
+    # for i in range(2):
+    #     method.eval()
+    #     images = method.sample_images()
+    #     images = transforms.ToPILImage()(images)
+    #     images.save(f'./{i}.png')
 
 if __name__ == "__main__":
     args = parser.parse_args()
