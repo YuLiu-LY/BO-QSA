@@ -39,6 +39,7 @@ Download ShapeStacks, ObjectsRoom, CLEVRTex and Flowers datasets with
 chmod +x scripts/downloads_data.sh
 ./downloads_data.sh
 ```
+For ObjectsRoom dataset, you need to run ``objectsroom_process.py`` to save the tfrecords dataset as a png format.
 
 ### PTR
 Download PTR dataset following instructions from http://ptr.csail.mit.edu.
@@ -58,13 +59,14 @@ To train the model from scratch we provide the following model files:
  - ``train_trans_dec.py``: transformer-based model
  - ``train_mixture_dec.py``: mixture-based model
  - ``train_base_sa.py``: original slot-attention
-We provide training scripts under ```scripts/train```. Please use the following command and change ``.sh`` file to the model you want to experiment with. Take the transformer-based decoder experiment on Birds as an exmaple, you can run the following:
+We provide training scripts under ``scripts/train``. Please use the following command and change ``.sh`` file to the model you want to experiment with. Take the transformer-based decoder experiment on Birds as an exmaple, you can run the following:
 ```bash
 $ cd scripts
 $ cd train
 $ chmod +x trans_dec_birds.sh
 $ ./trans_dec_birds.sh
 ```
+Remember to change the paths in ``path.json`` to your own paths.
 ## Reloading checkpoints & Evaluation
 
 To reload checkpoints and only run inference, we provide the following model files:
