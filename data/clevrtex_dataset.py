@@ -259,9 +259,9 @@ class CLEVRTEXDataModule(pl.LightningDataModule):
     # args.data_root = '/scratch/generalvision/CLEVRTEX'
     # args.use_rescale = False
     # args.batch_size = 40
-    # args.num_workers = 4
+    # args.num_workers = 0
     # args.resolution = 128, 128
-    # args.max_n_objects = 6
+    # args.split_name = 'full'
 
     # datamodule = CLEVRTEXDataModule(args)
     # dl = datamodule.train_dataloader()

@@ -31,23 +31,26 @@ pip install -r requirements.txt
 ```
 In our experiments, we used NVIDIA CUDA 11.3 on Ubuntu 20.04. Similar CUDA version should also be acceptable with corresponding version control for ``torch`` and ``torchvision``.
 
-## Data Download
-### ShapeStacks, ObjectsRoom, CLEVRTex, Flowers
+## Dataset
+### 1. ShapeStacks, ObjectsRoom, CLEVRTex, Flowers
 Download ShapeStacks, ObjectsRoom, CLEVRTex and Flowers datasets with
 ```bash
 chmod +x scripts/downloads_data.sh
 ./downloads_data.sh
 ```
-
-### PTR
+For ObjectsRoom dataset, you need to run ``objectsroom_process.py`` to save the tfrecords dataset as a png format.
+Remember to change the ``DATA_ROOT`` in ``downloads_data.sh`` and ``objectsroom_process.py`` to your own paths.
+### 2. PTR
 Download PTR dataset following instructions from http://ptr.csail.mit.edu.
 
-### Birds, Dogs, Cars
+### 3. Birds, Dogs, Cars
 Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the ```birds.zip```, ```cars.tar``` and ```dogs.zip``` and then uncompress them.
 
-### YCB, ScanNet, COCO
+### 4. YCB, ScanNet, COCO
 YCB, ScanNet and COCO datasets are available from [here](https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0), provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
 
+### 5. Data organization
+We organize the data as [follows](./data/README.md).
 
 ## Training
 
@@ -55,13 +58,14 @@ To train the model from scratch we provide the following model files:
  - ``train_trans_dec.py``: transformer-based model
  - ``train_mixture_dec.py``: mixture-based model
  - ``train_base_sa.py``: original slot-attention
-We provide training scripts under ```scripts/train```. Please use the following command and change ``.sh`` file to the model you want to experiment with. Take the transformer-based decoder experiment on Birds as an exmaple, you can run the following:
+We provide training scripts under ``scripts/train``. Please use the following command and change ``.sh`` file to the model you want to experiment with. Take the transformer-based decoder experiment on Birds as an exmaple, you can run the following:
 ```bash
 $ cd scripts
 $ cd train
 $ chmod +x trans_dec_birds.sh
 $ ./trans_dec_birds.sh
 ```
+Remember to change the paths in ``path.json`` to your own paths.
 ## Reloading checkpoints & Evaluation
 
 To reload checkpoints and only run inference, we provide the following model files:
