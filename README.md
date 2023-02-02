@@ -7,9 +7,9 @@
     <a href='https://arxiv.org/pdf/2210.08990.pdf'>
       <img src='https://img.shields.io/badge/Paper-PDF-red?style=plastic&logo=adobeacrobatreader&logoColor=red' alt='Paper PDF'>
     </a>
-    <a href='https://bo-qsa.github.io'>
+    <!-- <a href='https://bo-qsa.github.io'>
       <img src='https://img.shields.io/badge/Project-Page-blue?style=plastic&logo=Google%20chrome&logoColor=blue' alt='Project Page'>
-    </a>
+    </a> -->
 </p>
 
 This repository contains the official implementation of the ICLR 2023 paper:
@@ -20,8 +20,6 @@ This repository contains the official implementation of the ICLR 2023 paper:
 
 ## TODO:
 - [ ] Overview animation illustration
-- [ ] ClevrTex set-up instruction
-- [ ] Data organization instruction (e.g. file path changes in scripts)
 
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
@@ -45,7 +43,7 @@ chmod +x scripts/downloads_data.sh
 Download PTR dataset following instructions from http://ptr.csail.mit.edu.
 
 ### Birds, Dogs, Cars
-Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the 'birds.zip', 'cars.tar' and 'dogs.zip' and then uncompress them.
+Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the ```birds.zip```, ```cars.tar``` and ```dogs.zip``` and then uncompress them.
 
 ### YCB, ScanNet, COCO
 YCB, ScanNet and COCO datasets are available from [here](https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0), provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
