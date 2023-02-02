@@ -14,9 +14,10 @@
 
 This repository contains the official implementation of the ICLR 2023 paper:
 
-[Improving Object-centric Learning With Qeury Optimization](http://arxiv.org/abs/2210.08990)
+<!-- [Improving Object-centric Learning With Query Optimization](http://arxiv.org/abs/2210.08990) -->
+[Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](https://arxiv.org/abs/2210.08990)
 
-[Baoxiong Jia](https://buzz-beater.github.io/), [YuLiu](https://yuliu-ly.github.io), [Siyuan Huang](https://siyuanhuang.com/)
+[Baoxiong Jia](https://buzz-beater.github.io/)\*, [YuLiu](https://yuliu-ly.github.io)\*, [Siyuan Huang](https://siyuanhuang.com/)
 
 ## TODO:
 - [ ] Overview animation illustration
@@ -40,17 +41,14 @@ chmod +x scripts/downloads_data.sh
 ```
 For ObjectsRoom dataset, you need to run ``objectsroom_process.py`` to save the tfrecords dataset as a png format.
 Remember to change the ``DATA_ROOT`` in ``downloads_data.sh`` and ``objectsroom_process.py`` to your own paths.
-### 2. PTR
-Download PTR dataset following instructions from http://ptr.csail.mit.edu.
-
-### 3. Birds, Dogs, Cars
-Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the ```birds.zip```, ```cars.tar``` and ```dogs.zip``` and then uncompress them.
+### 2. PTR, Birds, Dogs, Cars
+Download PTR dataset following instructions from http://ptr.csail.mit.edu. Download CUB-Birds, Stanford Dogs, and Cars datasets from [here](https://drive.google.com/drive/folders/1zEzsKV2hOlwaNRzrEXc9oGdpTBrrVIVk), provided by authors from [DRC](https://github.com/yuPeiyu98/DRC). We use the ```birds.zip```, ```cars.tar``` and ```dogs.zip``` and then uncompress them.
 
 ### 4. YCB, ScanNet, COCO
 YCB, ScanNet and COCO datasets are available from [here](https://www.dropbox.com/sh/u1p1d6hysjxqauy/AACgEh0K5ANipuIeDnmaC5mQa?dl=0), provided by authors from [UnsupObjSeg](https://github.com/vLAR-group/UnsupObjSeg).
 
-### 5. Data organization
-We organize the data as [follows](./data/README.md).
+### 5. Data preparation
+Please organize the data following [here](./data/README.md) before experiments.
 
 ## Training
 
