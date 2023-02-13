@@ -7,9 +7,9 @@
     <a href='https://arxiv.org/pdf/2210.08990.pdf'>
       <img src='https://img.shields.io/badge/Paper-PDF-red?style=plastic&logo=adobeacrobatreader&logoColor=red' alt='Paper PDF'>
     </a>
-    <!-- <a href='https://bo-qsa.github.io'>
+    <a href='https://bo-qsa.github.io'>
       <img src='https://img.shields.io/badge/Project-Page-blue?style=plastic&logo=Google%20chrome&logoColor=blue' alt='Project Page'>
-    </a> -->
+    </a>
 </p>
 
 This repository contains the official implementation of the ICLR 2023 paper:
@@ -18,9 +18,10 @@ This repository contains the official implementation of the ICLR 2023 paper:
 [Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](https://arxiv.org/abs/2210.08990)
 
 [Baoxiong Jia](https://buzz-beater.github.io/)\*, [YuLiu](https://yuliu-ly.github.io)\*, [Siyuan Huang](https://siyuanhuang.com/)
-
-## TODO:
-- [ ] Overview animation illustration
+<br>
+<p align="center">
+    <img src="overview.gif"> </img>
+</p> 
 
 ## Environment Setup
 We provide all environment configurations in ``requirements.txt``. To install all packages, you can create a conda environment and install the packages as follows: 
