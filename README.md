@@ -14,8 +14,7 @@
 
 This repository contains the official implementation of the ICLR 2023 paper:
 
-<!-- [Improving Object-centric Learning With Query Optimization](http://arxiv.org/abs/2210.08990) -->
-[Unsupervised Object-centric Learning with Bi-level Optimized Query Slot Attention](https://arxiv.org/abs/2210.08990)
+[Improving Object-centric Learning With Query Optimization](http://arxiv.org/abs/2210.08990)
 
 [Baoxiong Jia](https://buzz-beater.github.io/)\*, [YuLiu](https://yuliu-ly.github.io)\*, [Siyuan Huang](https://siyuanhuang.com/)
 <br>
@@ -85,10 +84,10 @@ $ ./trans_dec_birds.sh
 If you find our paper and/or code helpful, please consider citing:
 ```
 @article{jia2022unsupervised,
-  title={Unsupervised Object-Centric Learning with Bi-Level Optimized Query Slot Attention},
+  title={Improving Object-centric Learning with Query Optimization},
   author={Jia, Baoxiong and Liu, Yu and Huang, Siyuan},
-  journal={arXiv preprint arXiv:2210.08990},
-  year={2022}
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2023}
 }
 ```
 
