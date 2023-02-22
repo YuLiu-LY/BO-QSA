@@ -37,7 +37,7 @@ class SlotAttentionMethod(pl.LightningModule):
         batch_img = batch['image']
         self.tau = self.cosine_anneal(self.global_step, self.args.tau_steps, start_value=self.args.tau_start, final_value=self.args.tau_final)
         self.sigma = self.cosine_anneal(self.global_step, self.args.sigma_steps, start_value=self.args.sigma_start, final_value=self.args.sigma_final)
-        loss_dict = self.model.forward(batch_img, tau=self.tau, sigma=self.sigma)['loss']
+        loss_dict = self.model.forward(batch_img, tau=self.tau, sigma=self.sigma, is_Train=True)['loss']
         loss = 0
         logs = {'tau': self.tau, 'sigma': self.sigma}
         for k, v in loss_dict.items():

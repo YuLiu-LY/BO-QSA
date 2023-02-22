@@ -11,6 +11,7 @@ from torch.nn import functional as F
 from models.encoder import Encoder
 from models.mixture_decoder import Decoder
 from models.slot_attn import SlotAttentionEncoder
+from sklearn.cluster import KMeans
 
 
 class SlotAttentionModel(nn.Module):
@@ -48,11 +49,33 @@ class SlotAttentionModel(nn.Module):
         self.num_slots = args.num_slots
         self.slot_size = args.slot_size
 
-    def forward(self, x, sigma=0):
+        self.use_post_cluster = args.use_post_cluster
+        self.lambda_c = args.lambda_c
+        if self.use_post_cluster:
+            self.register_buffer('post_cluster', torch.zeros(1, args.num_slots, args.slot_size))
+            nn.init.xavier_normal_(self.post_cluster)
+        self.kmeans = KMeans(n_clusters=args.num_slots, random_state=args.seed) if args.use_kmeans else None
 
-        features = self.encoder(x)
-        slot_attn_out = self.slot_attn(features, sigma=sigma)
-        slots = slot_attn_out['slots']
+    def forward(self, x, sigma=0, is_Train=False):
+        B = x.shape[0]
+        f = self.encoder(x)
+        if self.use_post_cluster:
+            slots_init = self.post_cluster.repeat(B, 1, 1)
+            slot_attn_out = self.slot_attn(f, sigma=sigma, slots_init=slots_init)
+            slots = slot_attn_out['slots']
+            if is_Train:
+                # update post cluster, shape: 1 x num_slots x slot_size
+                if self.kmeans is not None:
+                    print('kmeans')
+                    self.kmeans.fit(slots.detach().reshape(-1, self.slot_size).cpu().numpy())
+                    update = torch.Tensor(self.kmeans.cluster_centers_.reshape(1, self.num_slots, self.slot_size)).to(x.device)
+                    self.post_cluster = self.lambda_c * update + (1 - self.lambda_c) * self.post_cluster
+                else:
+                    update = slots.detach().mean(dim=0, keepdim=True)
+                    self.post_cluster = self.lambda_c * update + (1 - self.lambda_c) * self.post_cluster
+        else:
+            slot_attn_out = self.slot_attn(f, sigma=sigma)
+            slots = slot_attn_out['slots']
         masks, recons = self.decoder(slots)
 
         recon = torch.sum(recons * masks, dim=1)

@@ -36,7 +36,7 @@ class SlotAttentionMethod(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         batch_img = batch['image']
         self.sigma = self.cosine_anneal(self.global_step, self.args.sigma_steps, start_value=self.args.sigma_start, final_value=self.args.sigma_final)
-        out = self.model.forward(batch_img, sigma=self.sigma)
+        out = self.model.forward(batch_img, sigma=self.sigma, is_Train=True)
         logs = {}
         logs['sigma'] = self.sigma
         loss = out['mse']
