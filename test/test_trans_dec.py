@@ -117,6 +117,10 @@ parser.add_argument('--sigma_steps', type=int, default=30000)
 parser.add_argument('--sigma_final', type=float, default=0)
 parser.add_argument('--sigma_start', type=float, default=1)
 
+parser.add_argument('--use_post_cluster', default=False, action='store_true')
+parser.add_argument('--use_kmeans', default=False, action='store_true')
+parser.add_argument('--lambda_c', type=float, default=0.1)
+
 
 def main(args):
     print(args)
