@@ -83,10 +83,10 @@ $ ./trans_dec_birds.sh
 ## Citation
 If you find our paper and/or code helpful, please consider citing:
 ```
-@article{jia2022unsupervised,
+@inproceedings{jia2023improving,
   title={Improving Object-centric Learning with Query Optimization},
   author={Jia, Baoxiong and Liu, Yu and Huang, Siyuan},
-  journal={International Conference on Learning Representations (ICLR)},
+  booktitle={The Eleventh International Conference on Learning Representations},
   year={2023}
 }
 ```
